@@ -69,7 +69,7 @@ public class Request implements Runnable {
         out.write("Server: WolleWS\r\n");
         out.write("Content-Type: text/html\r\n");
         out.write("\r\n");
-        out.write("Hello world");
+        out.write(requestInfo.toHTMLString());
 
         return true;
     }

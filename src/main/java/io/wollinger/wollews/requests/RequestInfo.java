@@ -54,4 +54,40 @@ public class RequestInfo {
         }
     }
 
+    public String toHTMLString() {
+        String html = "<h1>Request Info</h1>";
+        html += getHTMLParameter("Method", method.toString());
+        html += getHTMLParameter("Requested file", requestedFile.getPath());
+        html += getHTMLParameter("Request type", requestType);
+        html += getHTMLParameter("Host", host);
+        html += getHTMLParameter("User-Agent", userAgent);
+
+        html += "<b>Accepts:</b>";
+        html += "<ul>";
+        for(AcceptParameter param : accepts) {
+            html += "<li>Type: " + param.getType() + ", Quality: " + param.getQuality() + "</li>";
+        }
+        html += "</ul>";
+
+        html += "<b>Accepts-Language:</b>";
+        html += "<ul>";
+        for(AcceptParameter param : acceptsLanguage) {
+            html += "<li>Type: " + param.getType() + ", Quality: " + param.getQuality() + "</li>";
+        }
+        html += "</ul>";
+
+        html += "<b>Accepts-Encoding:</b>";
+        html += "<ul>";
+        for(AcceptParameter param : acceptsEncoding) {
+            html += "<li>Type: " + param.getType() + ", Quality: " + param.getQuality() + "</li>";
+        }
+        html += "</ul>";
+
+        return html;
+    }
+
+    private String getHTMLParameter(String key, String value) {
+        return "<p><b>" + key + ":</b> " + value + "</p>";
+    }
+
 }
