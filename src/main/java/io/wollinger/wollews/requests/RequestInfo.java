@@ -11,9 +11,9 @@ public class RequestInfo {
     private String host;
     private String userAgent;
 
-    private ArrayList<AcceptParameter> accepts = new ArrayList<>();
-    private ArrayList<AcceptParameter> acceptsLanguage = new ArrayList<>();
-    private ArrayList<AcceptParameter> acceptsEncoding = new ArrayList<>();
+    private final ArrayList<AcceptParameter> accepts = new ArrayList<>();
+    private final ArrayList<AcceptParameter> acceptsLanguage = new ArrayList<>();
+    private final ArrayList<AcceptParameter> acceptsEncoding = new ArrayList<>();
 
 
     public boolean setMethod(String line) {
@@ -62,32 +62,25 @@ public class RequestInfo {
         html += getHTMLParameter("Host", host);
         html += getHTMLParameter("User-Agent", userAgent);
 
-        html += "<b>Accepts:</b>";
-        html += "<ul>";
-        for(AcceptParameter param : accepts) {
-            html += "<li>Type: " + param.getType() + ", Quality: " + param.getQuality() + "</li>";
-        }
-        html += "</ul>";
-
-        html += "<b>Accepts-Language:</b>";
-        html += "<ul>";
-        for(AcceptParameter param : acceptsLanguage) {
-            html += "<li>Type: " + param.getType() + ", Quality: " + param.getQuality() + "</li>";
-        }
-        html += "</ul>";
-
-        html += "<b>Accepts-Encoding:</b>";
-        html += "<ul>";
-        for(AcceptParameter param : acceptsEncoding) {
-            html += "<li>Type: " + param.getType() + ", Quality: " + param.getQuality() + "</li>";
-        }
-        html += "</ul>";
+        html += paramList("Accepts", accepts);
+        html += paramList("Accepts-Language", acceptsLanguage);
+        html += paramList("Accepts-Encoding", acceptsEncoding);
 
         return html;
     }
 
     private String getHTMLParameter(String key, String value) {
         return "<p><b>" + key + ":</b> " + value + "</p>";
+    }
+
+    private String paramList(String title, ArrayList<AcceptParameter> list) {
+        StringBuilder html = new StringBuilder("<b>" + title + ":</b>");
+        html.append("<ul>");
+        for(AcceptParameter param : list) {
+            html.append("<li>Type: ").append(param.getType()).append(", Quality: ").append(param.getQuality()).append("</li>");
+        }
+        html.append("</ul>");
+        return html.toString();
     }
 
 }
