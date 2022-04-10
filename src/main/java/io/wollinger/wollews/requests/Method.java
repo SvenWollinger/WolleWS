@@ -1,4 +1,4 @@
-package io.wollinger.wollews;
+package io.wollinger.wollews.requests;
 
 public enum Method {
     GET,

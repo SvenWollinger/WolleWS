@@ -1,21 +1,18 @@
-package io.wollinger.wollews;
+package io.wollinger.wollews.requests;
 
 import java.io.*;
 import java.net.Socket;
 
-public class RequestHandler implements Runnable {
+public class Request implements Runnable {
     private Socket socket;
 
     private BufferedReader in;
     private PrintWriter out;
     private BufferedOutputStream dataOut;
 
+    private RequestInfo requestInfo = new RequestInfo();
 
-    private Method method;
-    private File requestedFile;
-    private String requestType;
-
-    public RequestHandler(Socket socket) {
+    public Request(Socket socket) {
         this.socket = socket;
     }
 
@@ -54,15 +51,13 @@ public class RequestHandler implements Runnable {
 
     private boolean read() {
         try {
-            String mainRequestFull = in.readLine();
-            //TODO: This is sometimes null, is that alright to just close?
-            if(mainRequestFull == null || mainRequestFull.isEmpty())
+            if(!requestInfo.setMethod(in.readLine())) {
                 return false;
+            }
 
-            String[] mainRequest = mainRequestFull.split(" ");
-            method = Method.valueOf(mainRequest[0]);
-            requestedFile = new File(mainRequest[1]);
-            requestType = mainRequest[2];
+            for (String line = in.readLine(); line != null && !line.isEmpty(); line = in.readLine()) {
+                requestInfo.set(line);
+            }
         } catch (IOException ioException) {
             return false;
         }
