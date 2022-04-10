@@ -1,0 +1,8 @@
+/.gradle/
+/.idea/
+/build/
+/logs/
+/release/
+settings.gradle
+WolleWS.iml
+config.json
