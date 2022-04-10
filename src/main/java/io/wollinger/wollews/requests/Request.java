@@ -4,13 +4,13 @@ import java.io.*;
 import java.net.Socket;
 
 public class Request implements Runnable {
-    private Socket socket;
+    private final Socket socket;
 
     private BufferedReader in;
     private PrintWriter out;
     private BufferedOutputStream dataOut;
 
-    private RequestInfo requestInfo = new RequestInfo();
+    private final RequestInfo requestInfo = new RequestInfo();
 
     public Request(Socket socket) {
         this.socket = socket;
@@ -58,6 +58,8 @@ public class Request implements Runnable {
             for (String line = in.readLine(); line != null && !line.isEmpty(); line = in.readLine()) {
                 requestInfo.set(line);
             }
+
+            requestInfo.finish();
         } catch (IOException ioException) {
             return false;
         }

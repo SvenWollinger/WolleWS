@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class RequestInfo {
-    private Method method;
+    private MethodType method;
     private File requestedFile;
     private String requestType;
 
@@ -15,6 +15,7 @@ public class RequestInfo {
     private final ArrayList<AcceptParameter> acceptsLanguage = new ArrayList<>();
     private final ArrayList<AcceptParameter> acceptsEncoding = new ArrayList<>();
 
+    private ConnectionType connectionType;
 
     public boolean setMethod(String line) {
         //TODO: This is sometimes null, is that alright to just close?
@@ -22,7 +23,7 @@ public class RequestInfo {
             return false;
 
         String[] mainRequest = line.split(" ");
-        method = Method.valueOf(mainRequest[0]);
+        method = MethodType.valueOf(mainRequest[0]);
         requestedFile = new File(mainRequest[1]);
         requestType = mainRequest[2];
         return true;
@@ -36,8 +37,15 @@ public class RequestInfo {
             case "Accept:" -> addAcceptParameter(accepts, parts[1]);
             case "Accept-Language:" -> addAcceptParameter(acceptsLanguage, parts[1]);
             case "Accept-Encoding:" -> addAcceptParameter(acceptsEncoding, parts[1]);
+            case "Connection:" -> connectionType = ConnectionType.fromString(parts[1]);
             default -> System.out.println("RequestInfo.set -> Not handling this yet: " + line);
         }
+    }
+
+    public void finish() {
+        //Set defaults
+        if(connectionType == null)
+            connectionType = ConnectionType.DEFAULT_CONNECTION_TYPE;
     }
 
     private void addAcceptParameter(ArrayList<AcceptParameter> list, String line) {
@@ -66,10 +74,12 @@ public class RequestInfo {
         html += paramList("Accepts-Language", acceptsLanguage);
         html += paramList("Accepts-Encoding", acceptsEncoding);
 
+        html += getHTMLParameter("Connection", connectionType);
+
         return html;
     }
 
-    private String getHTMLParameter(String key, String value) {
+    private String getHTMLParameter(String key, Object value) {
         return "<p><b>" + key + ":</b> " + value + "</p>";
     }
 

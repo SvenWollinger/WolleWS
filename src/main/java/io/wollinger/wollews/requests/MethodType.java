@@ -1,6 +1,6 @@
 package io.wollinger.wollews.requests;
 
-public enum Method {
+public enum MethodType {
     GET,
     POST,
     PUT,
