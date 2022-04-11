@@ -7,6 +7,7 @@ import io.wollinger.wollews.response.Response;
 import io.wollinger.wollews.response.ResponseCode;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Request implements Runnable {
@@ -14,6 +15,7 @@ public class Request implements Runnable {
     private final WolleWS webserver;
 
     private Site site;
+    private InetAddress requester;
 
     private BufferedReader in;
     private PrintWriter out;
@@ -24,6 +26,7 @@ public class Request implements Runnable {
     public Request(Socket socket, WolleWS webserver) {
         this.socket = socket;
         this.webserver = webserver;
+        requester = socket.getInetAddress();
     }
 
     @Override
@@ -37,6 +40,8 @@ public class Request implements Runnable {
             close();
             return;
         }
+
+        System.out.println("Request: " + requester + " -> " + requestInfo.getRequestedFile());
 
         if(!write()) {
             //Writing failed. Do something? (And close)
