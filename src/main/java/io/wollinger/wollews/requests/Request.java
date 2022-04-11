@@ -1,7 +1,10 @@
 package io.wollinger.wollews.requests;
 
+import io.wollinger.wollews.HTMLUtils;
 import io.wollinger.wollews.Site;
 import io.wollinger.wollews.WolleWS;
+import io.wollinger.wollews.response.Response;
+import io.wollinger.wollews.response.ResponseCode;
 
 import java.io.*;
 import java.net.Socket;
@@ -78,11 +81,20 @@ public class Request implements Runnable {
     }
 
     private boolean write() {
-        out.write("HTTP/1.0 200 OK\r\n");
-        out.write("Server: WolleWS\r\n");
-        out.write("Content-Type: text/html\r\n");
-        out.write("\r\n");
-        out.write(requestInfo.toHTMLString());
+        File toCheck = new File(site.getWebroot(), requestInfo.getRequestedFile().getPath());
+        String response;
+
+        if(toCheck.exists()) {
+            if(toCheck.isDirectory()) {
+                response = "Folder";
+                new Response(out, ResponseCode.OK).sendResponse(HTMLUtils.getFolderListHTML(toCheck));
+            } else {
+                response = "File";
+            }
+        } else {
+            response = "File not found!";
+            new Response(out, ResponseCode.NOT_FOUND).sendResponse("File not found");
+        }
 
         return true;
     }

@@ -95,6 +95,10 @@ public class RequestInfo {
         return html.toString();
     }
 
+    public File getRequestedFile() {
+        return requestedFile;
+    }
+
     public String getHost() {
         return host;
     }

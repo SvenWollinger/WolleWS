@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.util.HashMap;
 
 public class WolleWS {
+    public static final String SERVER_NAME = "WolleWS";
+    public static final String SERVER_VERSION = "0.0.1";
     public static final int PORT = 8080;
     private boolean running = true;
     private final HashMap<String, Site> sites = new HashMap<>();
