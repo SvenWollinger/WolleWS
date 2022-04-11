@@ -37,7 +37,7 @@ public class Response {
             dataOut.write(readFileData(file), 0, (int) file.length());
             dataOut.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            //Sending file failed for some reason, or just stopped. Ignore.
         }
 
     }
