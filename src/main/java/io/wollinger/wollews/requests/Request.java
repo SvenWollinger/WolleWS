@@ -87,7 +87,7 @@ public class Request implements Runnable {
         if(toCheck.exists()) {
             if(toCheck.isDirectory()) {
                 response = "Folder";
-                new Response(out, ResponseCode.OK).sendResponse(HTMLUtils.getFolderListHTML(toCheck));
+                new Response(out, ResponseCode.OK).sendResponse(HTMLUtils.getFolderListHTML(toCheck, requestInfo));
             } else {
                 response = "File";
             }
