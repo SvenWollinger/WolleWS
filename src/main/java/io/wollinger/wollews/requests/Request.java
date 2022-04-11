@@ -82,18 +82,15 @@ public class Request implements Runnable {
 
     private boolean write() {
         File toCheck = new File(site.getWebroot(), requestInfo.getRequestedFile().getPath());
-        String response;
 
         if(toCheck.exists()) {
             if(toCheck.isDirectory()) {
-                response = "Folder";
-                new Response(out, ResponseCode.OK).sendResponse(HTMLUtils.getFolderListHTML(toCheck, requestInfo));
+                new Response(out, dataOut, ResponseCode.OK).sendResponse(HTMLUtils.getFolderListHTML(toCheck, requestInfo));
             } else {
-                response = "File";
+                new Response(out, dataOut, ResponseCode.OK).sendResponse(toCheck);
             }
         } else {
-            response = "File not found!";
-            new Response(out, ResponseCode.NOT_FOUND).sendResponse("File not found");
+            new Response(out, dataOut, ResponseCode.NOT_FOUND).sendResponse("File not found");
         }
 
         return true;
