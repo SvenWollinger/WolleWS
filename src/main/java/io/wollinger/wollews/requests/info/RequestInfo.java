@@ -1,4 +1,4 @@
-package io.wollinger.wollews.requests;
+package io.wollinger.wollews.requests.info;
 
 import io.wollinger.wollews.WolleWS;
 
@@ -18,6 +18,8 @@ public class RequestInfo {
     private final ArrayList<AcceptParameter> acceptsEncoding = new ArrayList<>();
 
     private ConnectionType connectionType;
+    private String referer;
+    private int upgradeInsecureRequests;
 
     public boolean setMethod(String line) {
         //TODO: This is sometimes null, is that alright to just close?
@@ -40,6 +42,8 @@ public class RequestInfo {
             case "Accept-Language:" -> addAcceptParameter(acceptsLanguage, parts[1]);
             case "Accept-Encoding:" -> addAcceptParameter(acceptsEncoding, parts[1]);
             case "Connection:" -> connectionType = ConnectionType.fromString(parts[1]);
+            case "Referer:" -> referer = parts[1];
+            case "Upgrade-Insecure-Requests:" -> upgradeInsecureRequests = Integer.parseInt(parts[1]);
             default -> System.out.println("RequestInfo.set -> Not handling this yet: " + line);
         }
     }

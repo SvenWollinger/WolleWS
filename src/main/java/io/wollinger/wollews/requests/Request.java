@@ -3,6 +3,7 @@ package io.wollinger.wollews.requests;
 import io.wollinger.wollews.HTMLUtils;
 import io.wollinger.wollews.Site;
 import io.wollinger.wollews.WolleWS;
+import io.wollinger.wollews.requests.info.RequestInfo;
 import io.wollinger.wollews.response.Response;
 import io.wollinger.wollews.response.ResponseCode;
 

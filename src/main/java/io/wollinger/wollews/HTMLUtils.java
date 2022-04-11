@@ -1,6 +1,6 @@
 package io.wollinger.wollews;
 
-import io.wollinger.wollews.requests.RequestInfo;
+import io.wollinger.wollews.requests.info.RequestInfo;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package io.wollinger.wollews.requests;
+package io.wollinger.wollews.requests.info;
 
 public class AcceptParameter {
     private final String type;
