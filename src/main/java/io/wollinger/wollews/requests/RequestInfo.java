@@ -1,5 +1,7 @@
 package io.wollinger.wollews.requests;
 
+import io.wollinger.wollews.WolleWS;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -32,7 +34,7 @@ public class RequestInfo {
     public void set(String line) {
         String[] parts = line.split(" ", 2);
         switch (parts[0]) {
-            case "Host:" -> host = parts[1];
+            case "Host:" -> host = parts[1].replaceFirst(":" + WolleWS.PORT, "");
             case "User-Agent:" -> userAgent = parts[1];
             case "Accept:" -> addAcceptParameter(accepts, parts[1]);
             case "Accept-Language:" -> addAcceptParameter(acceptsLanguage, parts[1]);
@@ -91,6 +93,10 @@ public class RequestInfo {
         }
         html.append("</ul>");
         return html.toString();
+    }
+
+    public String getHost() {
+        return host;
     }
 
 }

@@ -1,10 +1,16 @@
 package io.wollinger.wollews.requests;
 
+import io.wollinger.wollews.Site;
+import io.wollinger.wollews.WolleWS;
+
 import java.io.*;
 import java.net.Socket;
 
 public class Request implements Runnable {
     private final Socket socket;
+    private final WolleWS webserver;
+
+    private Site site;
 
     private BufferedReader in;
     private PrintWriter out;
@@ -12,8 +18,9 @@ public class Request implements Runnable {
 
     private final RequestInfo requestInfo = new RequestInfo();
 
-    public Request(Socket socket) {
+    public Request(Socket socket, WolleWS webserver) {
         this.socket = socket;
+        this.webserver = webserver;
     }
 
     @Override
@@ -60,6 +67,10 @@ public class Request implements Runnable {
             }
 
             requestInfo.finish();
+
+            site = webserver.getSite(requestInfo.getHost());
+            if(site == null)
+                return false;
         } catch (IOException ioException) {
             return false;
         }
