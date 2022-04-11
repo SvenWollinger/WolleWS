@@ -1,14 +1,14 @@
 package io.wollinger.wollews.response;
 
-import io.wollinger.wollews.ContentType;
 import io.wollinger.wollews.WolleWS;
 
 import java.io.*;
+import java.nio.file.Files;
 
 public class Response {
-    private PrintWriter out;
-    private BufferedOutputStream dataOut;
-    private ResponseCode code;
+    private final PrintWriter out;
+    private final BufferedOutputStream dataOut;
+    private final ResponseCode code;
 
     public Response(PrintWriter out, BufferedOutputStream dataOut, ResponseCode code) {
         this.out = out;
@@ -19,7 +19,7 @@ public class Response {
     public void sendResponse(String response) {
         out.write(getResponseCode());
         out.write(getServerInfo());
-        out.write(getContentType(ContentType.TEXT_HTML));
+        out.write(getContentType("text/html"));
         out.write("\r\n");
         out.write(response);
         out.flush();
@@ -28,7 +28,7 @@ public class Response {
     public void sendResponse(File file) {
         out.write(getResponseCode());
         out.write(getServerInfo());
-        out.write(getContentType(ContentType.getContentTypeFromFile(file)));
+        out.write(getContentType(file));
         out.write(getFileLength(file));
         out.write("\r\n");
         out.flush();
@@ -54,8 +54,20 @@ public class Response {
         return "Server: " + WolleWS.SERVER_NAME + " " + WolleWS.SERVER_VERSION + "\r\n";
     }
 
-    public String getContentType(ContentType type) {
-        return "Content-Type: " + type.getType() + "\r\n";
+    public String getContentType(String type) {
+        return "Content-Type: " + type + "\r\n";
+    }
+
+    public String getContentType(File file) {
+        String type = null;
+        try {
+            type = Files.probeContentType(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(type == null)
+            type = "text/plain";
+        return getContentType(type);
     }
 
     private byte[] readFileData(File file) {
