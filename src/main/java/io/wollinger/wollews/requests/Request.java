@@ -42,8 +42,6 @@ public class Request implements Runnable {
             return;
         }
 
-        System.out.println("Request: " + requester + " -> " + requestInfo.getRequestedFile());
-
         if(!write()) {
             //Writing failed. Do something? (And close)
             //TODO: What do?
@@ -76,6 +74,8 @@ public class Request implements Runnable {
             }
 
             requestInfo.finish();
+
+            System.out.println("Request from <" + requester + "> for site <" + requestInfo.getHost() + "> for file <" + requestInfo.getRequestedFile().getPath() + ">");
 
             site = webserver.getSite(requestInfo.getHost());
             if(site == null)
