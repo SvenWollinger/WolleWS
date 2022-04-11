@@ -3,6 +3,8 @@ package io.wollinger.wollews.requests.info;
 import io.wollinger.wollews.WolleWS;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class RequestInfo {
@@ -28,7 +30,13 @@ public class RequestInfo {
 
         String[] mainRequest = line.split(" ");
         method = MethodType.valueOf(mainRequest[0]);
-        requestedFile = new File(mainRequest[1]);
+
+        try {
+            //This avoids issues like spaces beeing %20
+            requestedFile = new File(new URI(mainRequest[1]).getPath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         requestType = mainRequest[2];
         return true;
     }
